@@ -7,3 +7,15 @@ RemoteSystemsTempFiles
 /cidu/cidu-web/.classpath
 /cidu/cidu-web/.project
 /cidu/.settings
+/cidu/cidu-common/*.project
+/cidu/cidu-common/*
+/cidu/cidu-common/*.classpath
+/cidu/cidu-dao/.project
+/cidu/cidu-dao/.settings
+/cidu/cidu-dao/target
+/cidu/cidu-dao/.classpath
+/cidu/cidu-service/.project
+/cidu/cidu-service/.settings
+/cidu/cidu-service/logs
+/cidu/cidu-service/target
+/cidu/cidu-service/.classpath
