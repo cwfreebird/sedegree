@@ -9,91 +9,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="${pageContext.request.contextPath}/resource/dist/images/favicon.ico">
 <title>首页</title>
-    <!-- Bootstrap core CSS -->
-    <link href="${pageContext.request.contextPath}/resource/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="${pageContext.request.contextPath}/resource/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="${pageContext.request.contextPath}/resource/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="${pageContext.request.contextPath}/resource/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/resource/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/resource/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/resource/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <script src="${pageContext.request.contextPath}/resource/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
-<body role="document">
-	<nav class="navbar navbar-inverse ">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <img src="${pageContext.request.contextPath}/resource/images/logo.png"/>
+<body>
+	<div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#">Sedegree<%-- <img src="${pageContext.request.contextPath}/resource/images/logo.png"/> --%></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+                            	<i class="icon-user"></i> ${userName}
+                            	<i class="caret"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- <li>
+                                    <a tabindex="-1" href="#">Profile</a>
+                                </li>
+                                <li class="divider"></li> -->
+                                <li>
+                                    <a tabindex="-1" href="<c:url value="/login.do?logout" />">注销</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav">
+                        <li><a href="${pageContext.request.contextPath}/user/index.do">首页</a></li>
+            			<li class="active"><a href="${pageContext.request.contextPath}/customer/list.do" target="_self">客户信息</a></li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="${pageContext.request.contextPath}/user/index.do">首页</a></li>
-            <li class="active"><a href="${pageContext.request.contextPath}/customer/list.do" target="_self">用户信息</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    </div>
     
-    <div class="container theme-showcase" role="main">
-    	<div class="row">
-	    	<div class="panel panel-info">
-	            <div class="panel-heading">
-	              <h3 class="panel-title">用户信息</h3>
+    <div class="container-fluid">
+    	<div class="row-fluid">
+	        <!-- block -->
+	        <div class="block">
+	            <div class="navbar navbar-inner block-header">
+	                <div class="muted pull-left">客户信息</div>
 	            </div>
-	            <div class="panel-body">
-	            	<div class="row">
-        				<div class="col-md-12">
-        					<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>姓名</th>
-										<th>联系电话</th>
-										<th>地址</th>
-										<th>状态</th>
-										<th>创建时间</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								<c:choose>
-									<c:when test="${empty customers}">
+	            <div class="block-content collapse in">
+	                <div class="span12">
+	                   <div class="table-toolbar">
+	                      <div class="btn-group">
+	                         <a href="${pageContext.request.contextPath}/customer/add.do"><button class="btn btn-warning">新增 <i class="icon-plus icon-white"></i></button></a>
+	                      </div>
+	                      <div class="btn-group pull-right">
+	                         <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
+	                         <ul class="dropdown-menu">
+	                            <li><a href="#">Print</a></li>
+	                            <li><a href="#">Save as PDF</a></li>
+	                            <li><a href="#">Export to Excel</a></li>
+	                         </ul>
+	                      </div>
+	                   </div>
+	                    
+	                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered " id="cusotmerTable">
+	                        <thead>
+	                            <tr>
+	                                <th width="10%">姓名</th>
+									<th width="15%">联系电话</th>
+									<th>地址</th>
+									<th width="10%">状态</th>
+									<th width="15%">创建时间</th>
+									<th width="10%">操作</th>
+	                            </tr>
+	                        </thead>
+	                        <c:choose>
+								<c:when test="${empty customers}">
 									<tr>
 										<td colspan="10">没有记录</td>
 									</tr>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="customer" items="${customers}">
+										<c:forEach var="customer" items="${customers}" varStatus="status">
 											<tr>
 												<td>${customer.name}</td>
 												<td>${customer.mobile}</td>
 												<td>${customer.address}</td>
-												<td>${customer.status}</td>
+												<td><c:if test="${customer.status eq 'Y'}">有效</c:if><c:if test="${customer.status eq 'N'}">无效</c:if></td>
 												<td><fmt:formatDate value="${customer.createTime}"  pattern="yyyy-MM-dd HH:mm:ss" /></td>
-												<td><a href="${pageContext.request.contextPath}/customer/detail/${customer.id}.do">修改</a></td>
+												<td>
+													<div class="btn-group">
+								                         <a href="${pageContext.request.contextPath}/customer/detail/${customer.id}.do" style="padding: 2px;"><button class="btn btn-success btn-mini">修改 <i class="icon-pencil icon-white"></i></button></a>
+								                         <a href="#matrix_${status.index}" data-toggle="modal"><button class="btn btn-info btn-mini">二维码<i class="icon-barcode icon-white"></i></button></a>
+								                    </div>
+								                    <div id="matrix_${status.index}" class="modal hide">
+														<div class="modal-header">
+															<button data-dismiss="modal" class="close" type="button">&times;</button>
+															<h3>${customer.name}</h3>
+														</div>
+														<div class="modal-body">
+															<p><img src='${pageContext.request.contextPath}/resource/images/1.jpg'></p>
+														</div>
+													</div>
+												</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
 								</c:choose>
-								</tbody>
-							</table>
-        				</div>
-	        		</div>
+	                    </table>
+	                </div>
 	            </div>
 	        </div>
-        </div>
-	</div>
+	        <!-- /block -->
+	    </div>
+        <footer>
+            <p>&copy; 次度 2016</p>
+        </footer>
+    </div>
+	
+	<script src="${pageContext.request.contextPath}/resource/vendors/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resource/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resource/vendors/datatables/js/jquery.dataTables.min.js"></script>
 
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-    <script>window.jQuery || document.write('<script src="${pageContext.request.contextPath}/resource/assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="${pageContext.request.contextPath}/resource/dist/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resource/assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="${pageContext.request.contextPath}/resource/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="${pageContext.request.contextPath}/resource/assets/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resource/assets/DT_bootstrap.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+	    $("#cusotmerTable").DataTable({
+	        "order": [[ 4, "desc" ]]
+	    } );
+	});
+    $(function() {
+        $('.tooltip').tooltip();	
+		$('.tooltip-left').tooltip({ placement: 'left' });	
+		$('.tooltip-right').tooltip({ placement: 'right' });	
+		$('.tooltip-top').tooltip({ placement: 'top' });	
+		$('.tooltip-bottom').tooltip({ placement: 'bottom' });
+
+		$('.popover-left').popover({placement: 'left', trigger: 'hover'});
+		$('.popover-right').popover({placement: 'right', trigger: 'hover'});
+		$('.popover-top').popover({placement: 'top', trigger: 'hover'});
+		$('.popover-bottom').popover({placement: 'bottom', trigger: 'hover'});
+
+		$('.notification').click(function() {
+			var $id = $(this).attr('id');
+			switch($id) {
+				case 'notification-sticky':
+					$.jGrowl("Stick this!", { sticky: true });
+				break;
+
+				case 'notification-header':
+					$.jGrowl("A message with a header", { header: 'Important' });
+				break;
+
+				default:
+					$.jGrowl("Hello world!");
+				break;
+			}
+		});
+    });
+
+    </script>
 </body>
 </html>

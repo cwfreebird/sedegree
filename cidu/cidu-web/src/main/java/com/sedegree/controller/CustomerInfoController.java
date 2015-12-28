@@ -10,11 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -38,8 +43,13 @@ public class CustomerInfoController {
 	@Value("${matrixImagePath}")
 	private String matrixImagePath;
 	
-	@Value("${matrixImageUrl}")
-	private String matrixImageUrl;
+	@Value("${matrixImageText}")
+	private String matrixImageText;
+	
+	@ModelAttribute
+	public void userName(Model model){
+		model.addAttribute("userName", getPrincipal());
+	}
 	
 	@RequestMapping("/add")
 	public String add(HttpServletRequest request , Model model){
@@ -50,7 +60,7 @@ public class CustomerInfoController {
 		
 		int i = customerInfoService.addCustomer(customer);
 		if(i > 0){
-			String text = matrixImageUrl + customer.getId() + ".do";
+			String text = matrixImageText + customer.getId() + ".do";
 			String imageFullPath = matrixImagePath + customer.getId();
 			MatrixToImageWriter.createBitMatrixImage(text, imageFullPath);
 		}
@@ -59,15 +69,17 @@ public class CustomerInfoController {
 	
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request ,Model model){
-		System.out.println(System.getProperty("user.dir"));
-		System.out.println(Thread.currentThread().getContextClassLoader().getResource("/").toString());
+		//System.out.println(System.getProperty("user.dir"));
+		//System.out.println(Thread.currentThread().getContextClassLoader().getResource("/").toString());
 		List<CustomerInfo> customers = customerInfoService.getCustomers();
 		model.addAttribute("customers", customers);
+		
 		return "customer/list";
 	}
 	
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(CustomerInfo customer , Model model){
+		log.info("update=============");
 		customerInfoService.updateByPrimaryKeySelective(customer);
 		return "redirect:list.do";
 	}
@@ -79,4 +91,22 @@ public class CustomerInfoController {
 		return "customer/detail";
 	}
 	
+	@RequestMapping("/view/{id}")
+	public String view(@PathVariable String id,Model model){
+		CustomerInfo customer = customerInfoService.getCustomerById(id);
+		model.addAttribute("customer", customer);
+		return "customer/view";
+	}
+	
+	private String getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+ 
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
 }

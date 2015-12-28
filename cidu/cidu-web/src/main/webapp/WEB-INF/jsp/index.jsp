@@ -66,7 +66,6 @@
     </div>
     </div>
 
-<a href="${pageContext.request.contextPath}/customer/add.do">新增</a>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
