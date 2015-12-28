@@ -3,3 +3,6 @@ Servers
 RemoteSystemsTempFiles
 /cidu/cidu-web/target
 /cidu/cidu-web/.settings
+/cidu/cidu-web/logs
+/cidu/cidu-web/.classpath
+/cidu/cidu-web/.project
