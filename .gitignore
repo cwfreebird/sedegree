@@ -2,3 +2,4 @@ Servers
 .metadata
 RemoteSystemsTempFiles
 /cidu/cidu-web/target
+/cidu/cidu-web/.settings
