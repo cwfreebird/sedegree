@@ -11,6 +11,8 @@ public class CustomerInfo {
 
     private String address;
 
+    private String flag;
+
     private String status;
 
     private Date createTime;
@@ -47,6 +49,14 @@ public class CustomerInfo {
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public String getStatus() {

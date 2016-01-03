@@ -23,6 +23,14 @@ public class CustomerInfoServiceImpl implements ICustomerInfoService {
 	public int updateByPrimaryKeySelective(CustomerInfo customerInfo) {
 		return customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
 	}
+	
+	@Override
+	public int updateByPrimaryKeySelective(List<CustomerInfo> customers) {
+		customers.forEach(customer -> {
+			customerInfoMapper.updateByPrimaryKeySelective(customer);
+		});
+		return customers.size();
+	}
 
 	public int addCustomer(CustomerInfo customerInfo) {
 		return customerInfoMapper.insertSelective(customerInfo);
@@ -31,5 +39,6 @@ public class CustomerInfoServiceImpl implements ICustomerInfoService {
 	public List<CustomerInfo> getCustomers() {
 		return customerInfoMapper.getCustomers();
 	}
+
 	
 }

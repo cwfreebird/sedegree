@@ -13,7 +13,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("cidu").password("abc123!").roles("USER");
+        auth.inMemoryAuthentication().withUser("cidu").password("abc123").roles("USER");
         auth.inMemoryAuthentication().withUser("admin").password("1").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");//dba have two roles.
     }
@@ -23,15 +23,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   
       http.authorizeRequests()
         .antMatchers("/resource/**").permitAll() 
-        .antMatchers("/view/**").permitAll()
-        .antMatchers("/customer/detail**").access("hasRole('USER') or hasRole('ADMIN')")
+        .antMatchers("/customer/view/**").permitAll()
+        .antMatchers("/customer/detail/**").access("hasRole('USER') or hasRole('ADMIN')")
+        .antMatchers("/customer/update**").access("hasRole('USER') or hasRole('ADMIN')")
         .antMatchers("/user/**","/customer/**").access("hasRole('ADMIN')")
         //.antMatchers("/admin/**").access("hasRole('ADMIN')")
         //.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")
         .anyRequest().authenticated()
         .and().formLogin().loginPage("/login.do").defaultSuccessUrl("/index.do").permitAll()//.loginProcessingUrl("/doLogin.do")
-        .and().logout().permitAll();
-        //.and().exceptionHandling().accessDeniedPage("/denied.do");
+        .and().logout().permitAll()
+        .and().exceptionHandling().accessDeniedPage("/denied.do");
   
     }
 }

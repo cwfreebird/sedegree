@@ -45,8 +45,10 @@
                         </li>
                     </ul>
                     <ul class="nav">
+                    	<sec:authorize access="hasRole('ADMIN')">
                         <li><a href="${pageContext.request.contextPath}/user/index.do">首页</a></li>
             			<li class="active"><a href="${pageContext.request.contextPath}/customer/list.do" target="_self">客户信息</a></li>
+            			</sec:authorize>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -88,11 +90,24 @@
 	                        </div>
 	                        <sec:authorize access="hasRole('ADMIN')">
 	                        <div class="control-group">
+	                          <label class="control-label">使用标识</label>
+	                          <div class="controls">
+	                          <label style="float: left; padding-right: 10px;">
+	                              <input type="radio" name="flag" value="0" <c:if test="${customer.flag eq '0'}">checked</c:if>>未使用
+	                          </label>
+	                          <label>
+	                              <input type="radio" name="flag" value="1" <c:if test="${customer.flag eq '1'}">checked</c:if>>已使用
+	                          </label>
+	                          </div>
+	                        </div>
+	                        <div class="control-group">
 	                          <label class="control-label">状态</label>
 	                          <div class="controls">
+	                          <label style="float: left; padding-right: 10px;">
+	                              <input type="radio" name="status" value="Y" <c:if test="${customer.status eq 'Y'}">checked</c:if>>有效
+	                          </label>
 	                          <label>
-	                              <label><input type="radio" name="status" value="Y" <c:if test="${customer.status eq 'Y'}">checked</c:if>>有效</label>
-	                              <label><input type="radio" name="status" value="N" <c:if test="${customer.status eq 'N'}">checked</c:if>>无效</label>
+	                              <input type="radio" name="status" value="N" <c:if test="${customer.status eq 'N'}">checked</c:if>>无效
 	                          </label>
 	                          </div>
 	                        </div>
@@ -106,6 +121,9 @@
 	                        <div class="form-actions">
 	                          <button type="submit" class="btn btn-primary">保存</button>
 	                          <button type="reset" class="btn">取消</button>
+	                          <sec:authorize access="hasRole('ADMIN')">
+	                          <button type="button" class="btn btn-info" onclick="window.history.back(-1);">返回</button>
+	                          </sec:authorize>
 	                        </div>
 	                      </fieldset>
 	                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

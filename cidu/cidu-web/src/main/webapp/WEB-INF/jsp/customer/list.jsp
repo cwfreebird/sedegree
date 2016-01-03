@@ -64,7 +64,9 @@
 	                <div class="span12">
 	                   <div class="table-toolbar">
 	                      <div class="btn-group">
-	                         <a href="${pageContext.request.contextPath}/customer/add.do"><button class="btn btn-warning">新增 <i class="icon-plus icon-white"></i></button></a>
+	                         <a href="#addCustomerDiv" data-toggle="modal" style="padding: 2px;"><button class="btn btn-primary ">新增 <i class="icon-plus icon-white"></i></button></a>
+	                         <button class="btn btn-primary " id="downloadImages">下载二维码 <i class="icon-download-alt icon-white"></i></button>
+	                         <a href="#updateFlagDiv" data-toggle="modal" style="padding: 2px;"><button class="btn btn-primary " id="updateFlag">设置标识 <i class="icon-edit icon-white"></i></button></a>
 	                      </div>
 	                      <div class="btn-group pull-right">
 	                         <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
@@ -75,14 +77,17 @@
 	                         </ul>
 	                      </div>
 	                   </div>
-	                    
+	                   <form action="" id="form" target="_blank" method="post">
 	                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered " id="cusotmerTable">
 	                        <thead>
 	                            <tr>
+	                                <th width="5%"></th>
+	                                <th>id</th>
 	                                <th width="10%">姓名</th>
 									<th width="15%">联系电话</th>
 									<th>地址</th>
-									<th width="10%">状态</th>
+									<th width="6%">使用标识</th>
+									<th width="6%">状态</th>
 									<th width="15%">创建时间</th>
 									<th width="10%">操作</th>
 	                            </tr>
@@ -96,14 +101,17 @@
 									<c:otherwise>
 										<c:forEach var="customer" items="${customers}" varStatus="status">
 											<tr>
+												<td><input type="checkbox" name="fileIds" value="${customer.id}"></td>
+												<td>${customer.id}</td>
 												<td>${customer.name}</td>
 												<td>${customer.mobile}</td>
 												<td>${customer.address}</td>
+												<td><span class="label label-success"><c:if test="${customer.flag eq '0'}">未使用</c:if></span><span class="label label-warning"><c:if test="${customer.flag eq '1'}">已使用</c:if></span></td>
 												<td><c:if test="${customer.status eq 'Y'}">有效</c:if><c:if test="${customer.status eq 'N'}">无效</c:if></td>
 												<td><fmt:formatDate value="${customer.createTime}"  pattern="yyyy-MM-dd HH:mm:ss" /></td>
 												<td>
 													<div class="btn-group">
-								                         <a href="${pageContext.request.contextPath}/customer/detail/${customer.id}.do" style="padding: 2px;"><button class="btn btn-success btn-mini">修改 <i class="icon-pencil icon-white"></i></button></a>
+								                         <a href="${pageContext.request.contextPath}/customer/detail/${customer.id}.do" style="padding: 2px;"><button type="button" class="btn btn-success btn-mini">修改 <i class="icon-pencil icon-white"></i></button></a>
 								                         <a href="#matrix_${status.index}" data-toggle="modal"><button class="btn btn-info btn-mini">二维码<i class="icon-barcode icon-white"></i></button></a>
 								                    </div>
 								                    <div id="matrix_${status.index}" class="modal hide">
@@ -112,7 +120,7 @@
 															<h3>${customer.name}</h3>
 														</div>
 														<div class="modal-body">
-															<p><img src='${pageContext.request.contextPath}/resource/images/1.jpg'></p>
+															<p><img src='http://localhost:8081/sedegree/${customer.id}.gif'></p>
 														</div>
 													</div>
 												</td>
@@ -121,6 +129,8 @@
 									</c:otherwise>
 								</c:choose>
 	                    </table>
+	                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                    </form>
 	                </div>
 	            </div>
 	        </div>
@@ -130,7 +140,60 @@
             <p>&copy; 次度 2016</p>
         </footer>
     </div>
-	
+	<div id="addCustomerDiv" class="modal hide" style="width: 350px;">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>新增客户</h3>
+		</div>
+		<div class="modal-body">
+			<div class="block-content collapse in">
+			<form action="<c:url value="/customer/add.do"></c:url>" class="form-horizontal" method="post">
+				<label class="control-label">请选择新增记录数<span class="required">*</span></label>
+				<div class="controls">
+					<select class="span6 m-wrap" name="records" style="width: 100px;">
+						<option value="1">1</option>
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+				<div class="form-actions">
+                  <button type="submit" class="btn btn-primary">新增</button>
+                </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            </form>
+			</div>
+		</div>
+	</div>
+	<div id="updateFlagDiv" class="modal hide" style="width: 40%;">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3>修改使用标识</h3>
+		</div>
+		<div class="modal-body">
+			<div class="block-content collapse in">
+			<form action="<c:url value="/customer/updateFlag.do"></c:url>" class="form-horizontal" id="updateFlagForm" method="post">
+				<input type="hidden" name="updateFlagForm_fileIds" id="updateFlagForm_fileIds">
+				<div class="control-group">
+                  <label class="control-label">使用标识</label>
+                  <div class="controls">
+                  <label style="float: left; padding-right: 10px;">
+                      <input type="radio" name="updateFlagForm_flag" value="0">未使用
+                  </label>
+                  <label>
+                      <input type="radio" name="updateFlagForm_flag" value="1">已使用
+                  </label>
+                  </div>
+                </div>
+				<div class="form-actions">
+                  <button type="button" class="btn btn-primary" id="updateFlagSubmit">保存</button>
+                </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            </form>
+			</div>
+		</div>
+	</div>
 	<script src="${pageContext.request.contextPath}/resource/vendors/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/resource/bootstrap/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/resource/vendors/datatables/js/jquery.dataTables.min.js"></script>
@@ -141,10 +204,72 @@
     <script type="text/javascript">
     $(document).ready(function() {
 	    $("#cusotmerTable").DataTable({
-	        "order": [[ 4, "desc" ]]
-	    } );
+	        "order": [[ 7, "desc" ]],
+	        "columnDefs": [
+               {
+                   "targets": [ 0 ],
+                   "searchable": false,
+                   "orderable":false
+               },
+               {
+                   "targets": [ 1 ],
+                   "visible": false,
+                   "searchable": true
+               }
+           ]
+	    });
+	    
+	    
 	});
     $(function() {
+    	$("#downloadImages").click(function(){
+    		$("#form").attr("action" , "<c:url value="/customer/download.do"></c:url>");
+	    	
+	    	if($(":checkbox[name='fileIds']:checked").length == 0){
+	    		alert("请先选中记录");
+	    		return;
+	    	}
+	    	
+	    	$("#form").submit();
+	    	/* 
+	    	$.ajax({
+	    		type: "post",
+				cache: false,
+				url:"${pageContext.request.contextPath}/customer/download.do",
+				data:{"fileIds": fileIds,"${_csrf.parameterName}":"${_csrf.token}"},
+				success: function (result){
+					
+				},
+	    		error: function (XMLHttpRequest, textStatus, errorThrown){
+		            alert("下载出错");
+	        	}
+	    	}); */
+	    });
+    	
+    	$("#updateFlag").click(function(){
+	    	if($(":checkbox[name='fileIds']:checked").length == 0){
+	    		alert("请先选中记录");
+	    		return false;
+	    	}
+	    });
+    	
+    	$("#updateFlagSubmit").click(function(){
+			var fileIds = "";
+    		
+	    	$(":checkbox[name='fileIds']:checked").each(function(){
+    			fileIds += $(this).val() + ",";
+	    	});
+	    	
+			$("#updateFlagForm_fileIds").val(fileIds.substring(0, fileIds.length - 1));
+	    	
+			if(typeof($(":radio[name='updateFlagForm_flag']:checked").val()) === "undefined"){
+				alert("请选择使用标识");
+				return;
+			}
+			
+			$("#updateFlagForm").submit();
+	    });
+    	
         $('.tooltip').tooltip();	
 		$('.tooltip-left').tooltip({ placement: 'left' });	
 		$('.tooltip-right').tooltip({ placement: 'right' });	

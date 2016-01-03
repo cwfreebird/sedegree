@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="common/taglib.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,6 +29,19 @@
           <img src="${pageContext.request.contextPath}/resource/images/logo.png"/>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+                            	<i class="icon-user"></i> ${userName}
+                            	<i class="caret"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="-1" href="<c:url value="/login.do?logout" />">注销</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
           <ul class="nav navbar-nav">
             <li class="active"><a href="${pageContext.request.contextPath}/user/index.do">首页</a></li>
             <li><a href="${pageContext.request.contextPath}/customer/list.do" target="_self">用户信息</a></li>

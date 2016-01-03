@@ -9,6 +9,8 @@ public interface ICustomerInfoService {
 	
 	int updateByPrimaryKeySelective(CustomerInfo customerInfo);
 	
+	int updateByPrimaryKeySelective(List<CustomerInfo> customers);
+	
 	int addCustomer(CustomerInfo customerInfo);
 	
 	List<CustomerInfo> getCustomers();

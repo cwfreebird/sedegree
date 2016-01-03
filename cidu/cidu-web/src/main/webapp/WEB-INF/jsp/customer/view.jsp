@@ -43,12 +43,12 @@
     </nav>
     
     <div class="alert alert-warning" role="alert">
-    	<h2>次度男装，与您一起共同关注老人与儿童</h2>
+    	<h2>次度男装，与您一起共同关注老人与儿童,<a href='<c:url value="/customer/detail/${customer.id}.do"></c:url>'>点击修改联系信息</a></h2>
     	<h3>联系人　：<span class="label label-warning">${customer.name}</span></h3>
     	<h3>联系电话：<span class="label label-warning">${customer.mobile}</span></h3>
         <h3>联系地址：<span class="label label-warning nowrap-text">${customer.address}</span></h3>
     </div>
-
+	
     <footer>
         <p>&copy; 次度男装 2016</p>
     </footer>
