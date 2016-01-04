@@ -120,7 +120,7 @@
 															<h3>${customer.name}</h3>
 														</div>
 														<div class="modal-body">
-															<p><img src='http://localhost:8081/sedegree/${customer.id}.gif'></p>
+															<p><img src='http://120.25.155.23:8080/sedegree/${customer.id}.gif'></p>
 														</div>
 													</div>
 												</td>
