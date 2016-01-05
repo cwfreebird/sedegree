@@ -19,6 +19,17 @@
     	<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="location" value="classpath:jdbc.properties" />
 	</bean>
+	
+	<!-- 加密码属性文件 -->
+    <!-- <bean id="myPropertyConfigurer"
+        class="com.zuidaima.spring.DecryptPropertyPlaceholderConfigurer">
+        <property name="order" value="1" />
+        <property name="locations">
+            <list><value>classpath*:spring_config/jdbc_official.databaseinfo</value></list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="keyLocation" value="classpath:spring_config/key.key" />
+    </bean> -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">

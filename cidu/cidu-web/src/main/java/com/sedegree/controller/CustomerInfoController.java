@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,6 +63,9 @@ public class CustomerInfoController {
 	@Value("${matrixImageText}")
 	private String matrixImageText;
 	
+	@Value("${matrixImageUrl}")
+	private String matrixImageUrl;
+	
 	@ModelAttribute
 	public void userName(Model model){
 		model.addAttribute("userName", getPrincipal());
@@ -91,6 +96,7 @@ public class CustomerInfoController {
 		//System.out.println(Thread.currentThread().getContextClassLoader().getResource("/").toString());
 		List<CustomerInfo> customers = customerInfoService.getCustomers();
 		model.addAttribute("customers", customers);
+		model.addAttribute("matrixImageUrl", matrixImageUrl);
 		
 		return "customer/list";
 	}
@@ -183,6 +189,15 @@ public class CustomerInfoController {
         }
         return userName;
     }
+	
+	private boolean hasRole(String roleName){
+		Collection<? extends GrantedAuthority> list = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		for(GrantedAuthority g : list){
+			System.out.println("=====" + ("ROLE_" + roleName).equals(g.getAuthority()));
+		}
+		
+		return list.contains(roleName);
+	}
 	
 	//二维码打包
 	private String zipImages(File[] files, String strZipPath){

@@ -38,7 +38,7 @@
                                 </li>
                                 <li class="divider"></li> -->
                                 <li>
-                                    <a tabindex="-1" href="<c:url value="/login.do?logout" />">注销</a>
+                                    <a tabindex="-1" href="<c:url value="/user/logout.do" />">注销</a>
                                 </li>
                             </ul>
                         </li>
@@ -112,17 +112,8 @@
 												<td>
 													<div class="btn-group">
 								                         <a href="${pageContext.request.contextPath}/customer/detail/${customer.id}.do" style="padding: 2px;"><button type="button" class="btn btn-success btn-mini">修改 <i class="icon-pencil icon-white"></i></button></a>
-								                         <a href="#matrix_${status.index}" data-toggle="modal"><button class="btn btn-info btn-mini">二维码<i class="icon-barcode icon-white"></i></button></a>
+								                         <a href="#matrixDiv" data-toggle="modal"><button class="btn btn-info btn-mini" name="matrixButton" _custName="${customer.name}" _custId="${customer.id}">二维码<i class="icon-barcode icon-white"></i></button></a>
 								                    </div>
-								                    <div id="matrix_${status.index}" class="modal hide">
-														<div class="modal-header">
-															<button data-dismiss="modal" class="close" type="button">&times;</button>
-															<h3>${customer.name}</h3>
-														</div>
-														<div class="modal-body">
-															<p><img src='http://120.25.155.23:8080/sedegree/${customer.id}.gif'></p>
-														</div>
-													</div>
 												</td>
 											</tr>
 										</c:forEach>
@@ -194,6 +185,15 @@
 			</div>
 		</div>
 	</div>
+	<div id="matrixDiv" class="modal hide">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">&times;</button>
+			<h3 id="matrix_customer_name">${customer.name}</h3>
+		</div>
+		<div class="modal-body">
+			<p id="matrix_image_url"><img src='${matrixImageUrl}${customer.id}.gif'></p>
+		</div>
+	</div>
 	<script src="${pageContext.request.contextPath}/resource/vendors/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/resource/bootstrap/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/resource/vendors/datatables/js/jquery.dataTables.min.js"></script>
@@ -216,7 +216,15 @@
                    "visible": false,
                    "searchable": true
                }
-           ]
+           	],
+           	"language": {
+           		"search":         "查询:",
+           		"zeroRecords":    "没有匹配的记录",
+           		"infoEmpty":      "显示 0 条记录",
+           	    "infoFiltered":   "(没有匹配的记录 共 _MAX_ 条记录)",
+           	 	"lengthMenu":     "显示 _MENU_ 条记录",
+         	    "info":           "第 _PAGE_ 页,共 _PAGES_ 页"
+         	 }
 	    });
 	    
 	    
@@ -253,6 +261,14 @@
 	    	}
 	    });
     	
+    	$(":button[name='matrixButton']").click(function(){
+	    	$("#matrix_customer_name").html($(this).attr("_custName"));
+	    	$("#matrix_image_url").html("<img src='${matrixImageUrl}" + $(this).attr("_custId") + ".gif'>");
+	    	//alert($("#matrix_customer_name").html());
+	    	//alert($("#matrix_image_url").html());
+	    	//return false;
+	    });
+    	
     	$("#updateFlagSubmit").click(function(){
 			var fileIds = "";
     		
@@ -269,36 +285,9 @@
 			
 			$("#updateFlagForm").submit();
 	    });
-    	
-        $('.tooltip').tooltip();	
-		$('.tooltip-left').tooltip({ placement: 'left' });	
-		$('.tooltip-right').tooltip({ placement: 'right' });	
-		$('.tooltip-top').tooltip({ placement: 'top' });	
-		$('.tooltip-bottom').tooltip({ placement: 'bottom' });
 
-		$('.popover-left').popover({placement: 'left', trigger: 'hover'});
-		$('.popover-right').popover({placement: 'right', trigger: 'hover'});
-		$('.popover-top').popover({placement: 'top', trigger: 'hover'});
-		$('.popover-bottom').popover({placement: 'bottom', trigger: 'hover'});
-
-		$('.notification').click(function() {
-			var $id = $(this).attr('id');
-			switch($id) {
-				case 'notification-sticky':
-					$.jGrowl("Stick this!", { sticky: true });
-				break;
-
-				case 'notification-header':
-					$.jGrowl("A message with a header", { header: 'Important' });
-				break;
-
-				default:
-					$.jGrowl("Hello world!");
-				break;
-			}
-		});
     });
-
+	
     </script>
 </body>
 </html>
