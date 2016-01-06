@@ -13,23 +13,27 @@
 	<context:component-scan base-package="com.sedegree" />
 	
 	<!-- 引入配置文件 -->
-	<bean id="propertyConfigurer"
+	<!-- <bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="order" value="1" />
+		<property name="order" value="2" />
     	<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="location" value="classpath:jdbc.properties" />
-	</bean>
+	</bean> -->
 	
 	<!-- 加密码属性文件 -->
-    <!-- <bean id="myPropertyConfigurer"
-        class="com.zuidaima.spring.DecryptPropertyPlaceholderConfigurer">
-        <property name="order" value="1" />
+    <bean id="myPropertyConfigurer"
+        class="com.sedegree.utils.DecryptPropertyPlaceholderConfigurer">
+        <property name="order" value="2" />
         <property name="locations">
-            <list><value>classpath*:spring_config/jdbc_official.databaseinfo</value></list>
+            <list>
+            	<!-- <value>classpath:en_jdbc.properties</value> -->
+            	<value>classpath:/dev/en_jdbc.properties</value>
+            </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>
-        <property name="keyLocation" value="classpath:spring_config/key.key" />
-    </bean> -->
+        <property name="keyLocation" value="classpath:key.key" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+    </bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">

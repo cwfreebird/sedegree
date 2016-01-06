@@ -39,14 +39,14 @@
                                 </li>
                                 <li class="divider"></li> -->
                                 <li>
-                                    <a tabindex="-1" href="<c:url value="/login.do?logout" />">注销</a>
+                                    <a tabindex="-1" href="<c:url value="/logout.do" />">注销</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                     <ul class="nav">
                     	<sec:authorize access="hasRole('ADMIN')">
-                        <li><a href="${pageContext.request.contextPath}/user/index.do">首页</a></li>
+                        <li><a href="${pageContext.request.contextPath}/index.do">首页</a></li>
             			<li class="active"><a href="${pageContext.request.contextPath}/customer/list.do" target="_self">客户信息</a></li>
             			</sec:authorize>
                     </ul>

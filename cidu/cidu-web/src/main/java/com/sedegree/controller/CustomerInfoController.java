@@ -68,7 +68,7 @@ public class CustomerInfoController {
 	
 	@ModelAttribute
 	public void userName(Model model){
-		model.addAttribute("userName", getPrincipal());
+		model.addAttribute("userName", SedegreeUtils.getPrincipal());
 	}
 	
 	@RequestMapping("/add")
@@ -177,18 +177,6 @@ public class CustomerInfoController {
 		
 		return "redirect:list.do";
 	}
-	
-	private String getPrincipal(){
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
- 
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
-    }
 	
 	private boolean hasRole(String roleName){
 		Collection<? extends GrantedAuthority> list = SecurityContextHolder.getContext().getAuthentication().getAuthorities();

@@ -12,12 +12,26 @@
     <context:annotation-config />
     
   	<!-- 引入配置文件 -->
-	<bean id="propertyConfigurer2"
+	<!-- <bean id="propertyConfigurer2"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="order" value="2" />
+		<property name="order" value="1" />
     	<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="location" value="classpath:cidu.properties" />
-	</bean>
+	</bean> -->
+	<bean id="myPropertyConfigurer2"
+        class="com.sedegree.utils.DecryptPropertyPlaceholderConfigurer">
+        <property name="order" value="1" />
+        <property name="locations">
+            <list>
+            	<!-- <value>classpath:en_cidu.properties</value> -->
+            	<value>classpath:/dev/en_cidu.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="keyLocation" value="classpath:key.key" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+    </bean>
+    
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->  
     <context:component-scan base-package="com.sedegree.controller" />
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  

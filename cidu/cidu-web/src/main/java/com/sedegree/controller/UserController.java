@@ -22,19 +22,19 @@ public class UserController {
 	@Resource
 	private IUserService userService;
 	
-	@RequestMapping("/index")
+	/*@RequestMapping("/index")
 	public String index(HttpServletRequest request,Model model){
 //		User user = userService.getUserById(1);
 //		model.addAttribute("user", user);
 		return "index";
-	}
+	}*/
 	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	/*@RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
        if (auth != null){
           new SecurityContextLogoutHandler().logout(request, response, auth);
        }
        return "logout";
-    }
+    }*/
 }

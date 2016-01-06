@@ -10,9 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.sedegree.utils.SedegreeUtils;
 
 /**
  * 登录控制器
@@ -25,6 +28,11 @@ public class LoginController {
 	private static Logger logger = LoggerFactory
 			.getLogger(LoginController.class);
 
+	@ModelAttribute
+	public void userName(Model model){
+		model.addAttribute("userName", SedegreeUtils.getPrincipal());
+	}
+	
 	/**
 	 * 登录页
 	 * 
@@ -71,6 +79,6 @@ public class LoginController {
        if (auth != null){
           new SecurityContextLogoutHandler().logout(request, response, auth);
        }
-       return "login";
+       return "logout";
     }
 }
