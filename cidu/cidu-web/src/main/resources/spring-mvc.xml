@@ -74,12 +74,4 @@
         <property name="maxInMemorySize" value="40960" />    
     </bean>
     
-	<!-- <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>classpath:cidu.properties</value>
-            </list>
-        </property>
-    </bean> -->
-    
 </beans>

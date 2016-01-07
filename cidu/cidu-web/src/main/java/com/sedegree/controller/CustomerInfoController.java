@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -45,6 +47,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.sedegree.domain.CustomerInfo;
 import com.sedegree.service.ICustomerInfoService;
+import com.sedegree.thread.CreateMatrixThread;
 import com.sedegree.utils.MatrixToImageWriter;
 import com.sedegree.utils.SedegreeUtils;
 
@@ -56,6 +59,9 @@ public class CustomerInfoController {
 	
 	@Resource
 	private ICustomerInfoService customerInfoService;
+	
+	@Autowired
+	private ThreadPoolTaskExecutor matrixTaskExecutor;
 	
 	@Value("${matrixImagePath}")
 	private String matrixImagePath;
@@ -82,9 +88,6 @@ public class CustomerInfoController {
 			int num = customerInfoService.addCustomer(customer);
 			if(num > 0){
 				this.createMatrixImage(customer.getId());
-				//String text = matrixImageText + customer.getId() + ".do";
-				//String imageFullPath = matrixImagePath + customer.getId();
-				//MatrixToImageWriter.createBitMatrixImage(text, imageFullPath);
 			}
 		}
 		return "redirect:list.do";
@@ -275,6 +278,7 @@ public class CustomerInfoController {
 	private void createMatrixImage(String id){
 		String text = matrixImageText + id + ".do";
 		String imageFullPath = matrixImagePath + id;
-		MatrixToImageWriter.createBitMatrixImage(text, imageFullPath);
+		//MatrixToImageWriter.createBitMatrixImage(text, imageFullPath);
+		matrixTaskExecutor.execute(new CreateMatrixThread(text, imageFullPath));
 	}
 }

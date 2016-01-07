@@ -19,7 +19,7 @@
 	<div class="container">
           <div class="alert alert-success">
 		 <p>您已成功登出.</p>
-		 <p><a href='<c:url value="/customer/list.do"/>' target="_self">点击重新登录</a></p>
+		 <p><a href='<c:url value="/index.do"/>' target="_self">点击重新登录</a></p>
           </div>
     </div> <!-- /container -->
 	

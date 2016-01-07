@@ -188,10 +188,10 @@
 	<div id="matrixDiv" class="modal hide">
 		<div class="modal-header">
 			<button data-dismiss="modal" class="close" type="button">&times;</button>
-			<h3 id="matrix_customer_name">${customer.name}</h3>
+			<h3 id="matrix_customer_name"></h3>
 		</div>
 		<div class="modal-body">
-			<p id="matrix_image_url"><img src='${matrixImageUrl}${customer.id}.gif'></p>
+			<p id="matrix_image_url"></p>
 		</div>
 	</div>
 	<script src="${pageContext.request.contextPath}/resource/vendors/jquery-1.11.3.min.js"></script>
