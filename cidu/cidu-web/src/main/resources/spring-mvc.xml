@@ -23,8 +23,8 @@
         <property name="order" value="1" />
         <property name="locations">
             <list>
-            	<!-- <value>classpath:en_cidu.properties</value> -->
-            	<value>classpath:/dev/en_cidu.properties</value>
+            	<value>classpath:en_cidu.properties</value>
+            	<!-- <value>classpath:/dev/en_cidu.properties</value> -->
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>

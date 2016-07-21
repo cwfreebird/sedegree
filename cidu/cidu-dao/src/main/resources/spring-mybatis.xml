@@ -26,8 +26,8 @@
         <property name="order" value="2" />
         <property name="locations">
             <list>
-            	<!-- <value>classpath:en_jdbc.properties</value> -->
-            	<value>classpath:/dev/en_jdbc.properties</value>
+            	<value>classpath:en_jdbc.properties</value>
+            	<!-- <value>classpath:/dev/en_jdbc.properties</value> -->
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>
